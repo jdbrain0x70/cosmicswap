@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Wallet, Zap, Plus, ArrowUpDown, ArrowDownUp, TrendingUp, Star, Sparkles } from 'lucide-react';
 
 const CosmicSwapDEX = () => {
+  // Load Tailwind CSS dynamically
+  React.useEffect(() => {
+    const existingLink = document.querySelector('link[href*="tailwindcss"]');
+    if (!existingLink) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.tailwindcss.com';
+      document.head.appendChild(link);
+    }
+  }, []);
   const [account, setAccount] = useState('');
   const [balances, setBalances] = useState({
     BASED: '0',
@@ -117,40 +127,61 @@ const CosmicSwapDEX = () => {
             type="text"
             value={searchQuery || value}
             onChange={handleSearchChange}
-            onFocus={() => setIsOpen(true)}
             placeholder={placeholder}
-            className="bg-purple-700/50 border border-purple-500 rounded-xl px-4 py-2 text-white flex-1 outline-none"
+            style={{
+              backgroundColor: 'rgba(124, 58, 237, 0.6)',
+              color: 'white',
+              border: '1px solid #c084fc',
+              borderRadius: '0.75rem',
+              padding: '0.5rem 1rem',
+              outline: 'none',
+              flex: '1'
+            }}
+            onFocus={(e) => {
+              setIsOpen(true);
+              e.target.style.backgroundColor = 'rgba(124, 58, 237, 0.6)';
+              e.target.style.color = 'white';
+            }}
           />
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-purple-600 hover:bg-purple-500 px-3 rounded-r-xl transition-colors"
+            className="bg-purple-600 hover:bg-purple-500 px-3 rounded-r-xl transition-colors text-white border border-purple-400 border-l-0"
+            style={{
+              backgroundColor: '#9333ea',
+              color: 'white',
+              border: '1px solid #c084fc',
+              borderLeft: 'none',
+              borderRadius: '0 0.75rem 0.75rem 0',
+              padding: '0 0.75rem',
+              cursor: 'pointer'
+            }}
           >
             ▼
           </button>
         </div>
         
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 bg-purple-800 border border-purple-500 rounded-xl mt-1 max-h-48 overflow-y-auto z-50">
+          <div className="absolute top-full left-0 right-0 bg-purple-700 border border-purple-400 rounded-xl mt-1 max-h-48 overflow-y-auto z-50">
             {filteredTokens.map(token => (
               <button
                 key={token.address}
                 onClick={() => handleSelect(token)}
-                className="w-full p-3 text-left hover:bg-purple-700 flex items-center justify-between"
+                className="w-full p-3 text-left hover:bg-purple-600 flex items-center justify-between text-white"
               >
                 <div>
-                  <div className="font-medium">{token.symbol}</div>
-                  <div className="text-xs text-purple-300 font-mono">
+                  <div className="font-medium text-white">{token.symbol}</div>
+                  <div className="text-xs text-purple-200 font-mono">
                     {token.address.slice(0, 8)}...{token.address.slice(-6)}
                   </div>
                 </div>
                 <div className="text-right text-sm">
-                  <div>{token.lastPrice} WBASED</div>
-                  <div className="text-xs text-purple-300">{token.volume24h}</div>
+                  <div className="text-white">{token.lastPrice} WBASED</div>
+                  <div className="text-xs text-purple-200">{token.volume24h}</div>
                 </div>
               </button>
             ))}
             {filteredTokens.length === 0 && (
-              <div className="p-3 text-purple-300 text-center">
+              <div className="p-3 text-purple-200 text-center">
                 {searchQuery.startsWith('0x') ? 'Searching for token...' : 'No tokens found'}
               </div>
             )}
@@ -330,14 +361,97 @@ const CosmicSwapDEX = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white"
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #581c87 0%, #1e3a8a 50%, #312e81 100%)',
+        color: 'white'
+      }}
+    >
       {/* Animated Background Stars */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute animate-pulse top-20 left-20 w-2 h-2 bg-white rounded-full opacity-60"></div>
-        <div className="absolute animate-pulse top-40 right-32 w-1 h-1 bg-purple-300 rounded-full opacity-80"></div>
-        <div className="absolute animate-pulse top-60 left-1/3 w-1.5 h-1.5 bg-blue-300 rounded-full opacity-70"></div>
-        <div className="absolute animate-pulse bottom-40 right-20 w-2 h-2 bg-pink-300 rounded-full opacity-60"></div>
-        <div className="absolute animate-pulse bottom-60 left-16 w-1 h-1 bg-cyan-300 rounded-full opacity-80"></div>
+      <div 
+        className="fixed inset-0 overflow-hidden pointer-events-none"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflow: 'hidden',
+          pointerEvents: 'none'
+        }}
+      >
+        <div 
+          className="absolute animate-pulse top-20 left-20 w-2 h-2 bg-white rounded-full opacity-60"
+          style={{
+            position: 'absolute',
+            top: '5rem',
+            left: '5rem',
+            width: '8px',
+            height: '8px',
+            backgroundColor: 'white',
+            borderRadius: '50%',
+            opacity: 0.6,
+            animation: 'pulse 2s infinite'
+          }}
+        ></div>
+        <div 
+          className="absolute animate-pulse top-40 right-32 w-1 h-1 bg-purple-300 rounded-full opacity-80"
+          style={{
+            position: 'absolute',
+            top: '10rem',
+            right: '8rem',
+            width: '4px',
+            height: '4px',
+            backgroundColor: '#d8b4fe',
+            borderRadius: '50%',
+            opacity: 0.8,
+            animation: 'pulse 2s infinite'
+          }}
+        ></div>
+        <div 
+          className="absolute animate-pulse top-60 left-1/3 w-1.5 h-1.5 bg-blue-300 rounded-full opacity-70"
+          style={{
+            position: 'absolute',
+            top: '15rem',
+            left: '33%',
+            width: '6px',
+            height: '6px',
+            backgroundColor: '#93c5fd',
+            borderRadius: '50%',
+            opacity: 0.7,
+            animation: 'pulse 2s infinite'
+          }}
+        ></div>
+        <div 
+          className="absolute animate-pulse bottom-40 right-20 w-2 h-2 bg-pink-300 rounded-full opacity-60"
+          style={{
+            position: 'absolute',
+            bottom: '10rem',
+            right: '5rem',
+            width: '8px',
+            height: '8px',
+            backgroundColor: '#f9a8d4',
+            borderRadius: '50%',
+            opacity: 0.6,
+            animation: 'pulse 2s infinite'
+          }}
+        ></div>
+        <div 
+          className="absolute animate-pulse bottom-60 left-16 w-1 h-1 bg-cyan-300 rounded-full opacity-80"
+          style={{
+            position: 'absolute',
+            bottom: '15rem',
+            left: '4rem',
+            width: '4px',
+            height: '4px',
+            backgroundColor: '#67e8f9',
+            borderRadius: '50%',
+            opacity: 0.8,
+            animation: 'pulse 2s infinite'
+          }}
+        ></div>
       </div>
 
       {/* Header */}
@@ -403,21 +517,50 @@ const CosmicSwapDEX = () => {
         {/* Main Interface */}
         <div className="bg-white/10 backdrop-blur-sm rounded-3xl border border-purple-500/20 overflow-hidden">
           {/* Tab Navigation */}
-          <div className="flex border-b border-purple-500/20">
+          <div 
+            className="flex border-b border-purple-500/20"
+            style={{ display: 'flex', borderBottom: '1px solid rgba(168, 85, 247, 0.2)' }}
+          >
             {['swap', 'liquidity', 'wrap'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 p-4 text-center font-medium transition-all duration-300 ${
-                  activeTab === tab
-                    ? 'bg-gradient-to-r from-purple-600/50 to-pink-600/50 text-white'
-                    : 'text-purple-300 hover:text-white hover:bg-purple-700/20'
-                }`}
+                className={`flex-1 p-4 text-center font-medium transition-all duration-300`}
+                style={{
+                  flex: '1',
+                  padding: '1rem',
+                  textAlign: 'center',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease',
+                  background: activeTab === tab 
+                    ? 'linear-gradient(90deg, rgba(147, 51, 234, 0.5) 0%, rgba(219, 39, 119, 0.5) 100%)'
+                    : 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: activeTab === tab ? 'white' : '#d8b4fe'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== tab) {
+                    e.target.style.color = 'white';
+                    e.target.style.backgroundColor = 'rgba(126, 34, 206, 0.2)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== tab) {
+                    e.target.style.color = '#d8b4fe';
+                    e.target.style.backgroundColor = 'transparent';
+                  }
+                }}
               >
-                {tab === 'swap' && <Zap className="w-5 h-5 inline mr-2" />}
-                {tab === 'liquidity' && <Plus className="w-5 h-5 inline mr-2" />}
-                {tab === 'wrap' && <ArrowUpDown className="w-5 h-5 inline mr-2" />}
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  {tab === 'swap' && <Zap className="w-5 h-5" style={{ width: '1.25rem', height: '1.25rem', marginRight: '0.5rem' }} />}
+                  {tab === 'liquidity' && <Plus className="w-5 h-5" style={{ width: '1.25rem', height: '1.25rem', marginRight: '0.5rem' }} />}
+                  {tab === 'wrap' && <ArrowUpDown className="w-5 h-5" style={{ width: '1.25rem', height: '1.25rem', marginRight: '0.5rem' }} />}
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </span>
               </button>
             ))}
           </div>
@@ -425,12 +568,12 @@ const CosmicSwapDEX = () => {
           <div className="p-8">
             {/* Swap Tab */}
             {activeTab === 'swap' && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-center mb-6">Swap Tokens</h2>
+                              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-center mb-6 text-white">Swap Tokens</h2>
                 
                 <div className="space-y-4">
-                  <div className="bg-purple-800/30 rounded-2xl p-4">
-                    <label className="block text-sm text-purple-300 mb-2">From</label>
+                  <div className="bg-purple-800/30 rounded-2xl p-4 border border-purple-500/30">
+                    <label className="block text-sm text-purple-200 mb-2 font-medium">From</label>
                     <div className="flex space-x-4">
                       <div className="min-w-32">
                         <TokenSelector
@@ -444,7 +587,19 @@ const CosmicSwapDEX = () => {
                         placeholder="0.0"
                         value={swapAmount}
                         onChange={(e) => setSwapAmount(e.target.value)}
-                        className="flex-1 bg-transparent text-2xl font-bold outline-none placeholder-purple-400"
+                        style={{
+                          backgroundColor: 'transparent',
+                          color: 'white',
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          outline: 'none',
+                          border: 'none',
+                          flex: '1'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.backgroundColor = 'transparent';
+                          e.target.style.color = 'white';
+                        }}
                       />
                     </div>
                   </div>
@@ -456,14 +611,14 @@ const CosmicSwapDEX = () => {
                         setSelectedTokenFrom(selectedTokenTo);
                         setSelectedTokenTo(temp);
                       }}
-                      className="bg-purple-600 hover:bg-purple-500 rounded-full p-3 transition-colors"
+                      className="bg-purple-600 hover:bg-purple-500 rounded-full p-3 transition-colors border border-purple-400"
                     >
-                      <ArrowDownUp className="w-6 h-6" />
+                      <ArrowDownUp className="w-6 h-6 text-white" />
                     </button>
                   </div>
 
-                  <div className="bg-purple-800/30 rounded-2xl p-4">
-                    <label className="block text-sm text-purple-300 mb-2">To</label>
+                  <div className="bg-purple-800/30 rounded-2xl p-4 border border-purple-500/30">
+                    <label className="block text-sm text-purple-200 mb-2 font-medium">To</label>
                     <div className="flex space-x-4">
                       <div className="min-w-32">
                         <TokenSelector
@@ -472,7 +627,7 @@ const CosmicSwapDEX = () => {
                           excludeToken={selectedTokenFrom}
                         />
                       </div>
-                      <div className="flex-1 text-2xl font-bold text-purple-300">
+                      <div className="flex-1 text-2xl font-bold text-purple-100">
                         {swapAmount ? (parseFloat(swapAmount) * 0.997).toFixed(4) : '0.0'}
                       </div>
                     </div>
